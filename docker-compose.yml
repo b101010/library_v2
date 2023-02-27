@@ -1,0 +1,39 @@
+version: "3.7"
+
+services:
+
+  flask:
+    build: ./flask
+    container_name: flask
+    restart: always
+    expose:
+      - 5000
+    networks:
+      - my-network
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    restart: always
+    ports:
+      - 80:80
+    networks:
+      - my-network
+    depends_on:
+      - flask
+
+  postgres:
+    build: ./postgres
+    container_name: postgres
+    restart: always
+    expose:
+      - 5432
+    # ports:
+    #   - 5432:5432
+    networks:
+      - my-network
+    depends_on:
+      - flask  
+
+networks:
+  my-network:
